@@ -14,7 +14,6 @@ class MyViewModel : ViewModel() {
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList
 
-    // Функция для загрузки мест
     fun loadPlaces(apiInterface: ApiInterface) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = apiInterface.getNearbyPlaces()
@@ -24,8 +23,6 @@ class MyViewModel : ViewModel() {
             }
         }
     }
-
-    // Функция для отображения карты с маршрутом
     fun showMapWithRoute(
         destination: Results,
         apiInterface: ApiInterface,

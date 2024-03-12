@@ -31,7 +31,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         polylinePoints = arguments?.getString("polylinePoints")
-        destinationName = arguments?.getString("destinationName") // Получаем название места
+        destinationName = arguments?.getString("destinationName")
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -40,21 +40,17 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun drawPolyline(polylinePoints: String?, destinationName: String?) {
-        // Теперь у нас есть название места, которое можно использовать для маркера
         polylinePoints?.let { it ->
             val decodedPoints = PolyUtil.decode(it)
             val polylineOptions = PolylineOptions().addAll(decodedPoints).color(Color.RED).width(10f)
             mMap.addPolyline(polylineOptions)
 
-            // Показать начальную точку маршрута
-            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("Start"))
+            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("My Position"))
 
-            // Показать конечную точку маршрута с названием места
             destinationName?.let {
                 mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(it))
             }
 
-            // Установить камеру так, чтобы она показывала весь маршрут
             val boundsBuilder = LatLngBounds.builder()
             decodedPoints.forEach { boundsBuilder.include(it) }
             val bounds = boundsBuilder.build()

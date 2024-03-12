@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         apiInterface = Client.client.create(ApiInterface::class.java)
         viewModel = ViewModelProvider(this)[MyViewModel::class.java]
 
-        // Установка RecyclerView и адаптера
         placesRecyclerView.layoutManager = LinearLayoutManager(this)
         placesAdapter = PlacesAdapter { selectedPlace ->
             viewModel.showMapWithRoute(selectedPlace, apiInterface, supportFragmentManager)

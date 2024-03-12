@@ -3,6 +3,7 @@ package com.example.googlemappoltava
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -24,8 +25,12 @@ class PlacesAdapter(private val onItemClick: (Results) -> Unit) :
     }
 
     inner class PlaceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val placeNameTextView: TextView = itemView.findViewById(R.id.placeNameTextView)
+        private val routeButton: ImageButton = itemView.findViewById(R.id.routeButton)
+
         fun bind(place: Results) {
-            itemView.findViewById<TextView>(R.id.placeNameTextView).text = place.name
+            placeNameTextView.text = place.name
+            routeButton.setOnClickListener { onItemClick(place) }
         }
     }
 
