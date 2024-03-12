@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "952821241572",
+    "project_id": "mappoltava",
+    "storage_bucket": "mappoltava.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:952821241572:android:b5c465c2b6e59e2c313ef1",
+        "android_client_info": {
+          "package_name": "com.example.googlemappoltava"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2hzElBi4OZ88rkIaunFBnT-i2nX2tAZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
