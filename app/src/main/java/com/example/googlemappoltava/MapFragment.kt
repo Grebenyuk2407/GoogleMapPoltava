@@ -18,8 +18,8 @@ import com.google.maps.android.PolyUtil
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private var polylinePoints: String? = null
-    private var destinationName: String? = null
+    var polylinePoints: String? = null
+    var destinationName: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_map, container, false)
@@ -29,9 +29,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        polylinePoints = arguments?.getString("polylinePoints")
-        destinationName = arguments?.getString("destinationName")
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

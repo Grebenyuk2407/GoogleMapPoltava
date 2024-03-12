@@ -37,12 +37,12 @@ class MyViewModel : ViewModel() {
 
             if (response.isSuccessful) {
                 val points = response.body()?.routes?.firstOrNull()?.overviewPolyline?.points
+                val destinationName = destination.name
                 points?.let {
-                    val bundle = Bundle().apply {
-                        putString("polylinePoints", it)
-                        putString("destinationName", destination.name)
+                    val mapFragment = MapFragment().apply {
+                        polylinePoints = it
+                        this.destinationName = destinationName
                     }
-                    val mapFragment = MapFragment().apply { arguments = bundle }
 
                     fragmentManager.beginTransaction()
                         .replace(R.id.mapContainer, mapFragment)
