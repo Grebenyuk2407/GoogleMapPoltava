@@ -1,6 +1,5 @@
 package com.example.googlemappoltava
 
-import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
