@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,8 +19,14 @@ import com.google.maps.android.PolyUtil
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    var polylinePoints: String? = null
-    var destinationName: String? = null
+    private lateinit var viewModel: MyViewModel
+    private var polylinePoints: String? = null
+    private var destinationName: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_map, container, false)
@@ -29,11 +36,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        viewModel.routeData.observe(viewLifecycleOwner) { routeData ->
+            polylinePoints = routeData.first
+            destinationName = routeData.second
+            if (::mMap.isInitialized) {
+                drawPolyline(polylinePoints, destinationName)
+            }
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        drawPolyline(polylinePoints, destinationName)
+        if (polylinePoints != null && destinationName != null) {
+            drawPolyline(polylinePoints, destinationName)
+        }
     }
 
     private fun drawPolyline(polylinePoints: String?, destinationName: String?) {

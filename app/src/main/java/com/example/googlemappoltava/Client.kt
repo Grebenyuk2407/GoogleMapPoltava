@@ -14,9 +14,6 @@ object Client {
 }
 
 interface ApiInterface {
-    @GET("/maps/api/directions/json?&origin=49.5937300,34.5407300&destination=49.553516,25.594767&key=AIzaSyC4No3voEuVTIYMBD90j-HzCrq5Rvx7ykM")
-    suspend fun getSimpleRoute(): Response<DirectionsResponse>
-
     @GET("/maps/api/place/nearbysearch/json?location=49.5937300,34.5407300&radius=2000&type=tourist_attractions&key=AIzaSyC4No3voEuVTIYMBD90j-HzCrq5Rvx7ykM")
     suspend fun getNearbyPlaces(): Response<PlacesResponse>
 
