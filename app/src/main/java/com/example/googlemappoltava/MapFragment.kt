@@ -20,8 +20,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var viewModel: MyViewModel
-    private var polylinePoints: String? = null
-    private var destinationName: String? = null
+    private var routes: List<Routes>? = null // Изменено на List<Routes>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,39 +36,39 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        viewModel.routeData.observe(viewLifecycleOwner) { routeData ->
-            polylinePoints = routeData.first
-            destinationName = routeData.second
+        viewModel.routeList.observe(viewLifecycleOwner) { routes ->
+            this.routes = routes
             if (::mMap.isInitialized) {
-                drawPolyline(polylinePoints, destinationName)
+                drawRoutes(routes)
             }
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if (polylinePoints != null && destinationName != null) {
-            drawPolyline(polylinePoints, destinationName)
-        }
+        routes?.let { drawRoutes(it) } // Добавлено обновление маршрутов при готовности карты
     }
 
-    private fun drawPolyline(polylinePoints: String?, destinationName: String?) {
-        polylinePoints?.let { it ->
-            val decodedPoints = PolyUtil.decode(it)
+    private fun drawRoutes(routes: List<Routes>) {
+        mMap.clear() // Очистим карту перед отрисовкой новых маршрутов
+
+        routes.forEach { route ->
+            val decodedPoints = PolyUtil.decode(route.overviewPolyline.points)
             val polylineOptions = PolylineOptions().addAll(decodedPoints).color(Color.RED).width(10f)
             mMap.addPolyline(polylineOptions)
 
-            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("My Position"))
+            // Добавляем маркеры для начальной и конечной точек маршрута
+            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("Начальная точка"))
+            val destinationName = route.overviewPolyline.points
+            mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(destinationName))
 
-            destinationName?.let {
-                mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(it))
-            }
-
+            // Вычисляем границы маршрута
             val boundsBuilder = LatLngBounds.builder()
             decodedPoints.forEach { boundsBuilder.include(it) }
             val bounds = boundsBuilder.build()
             val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 50)
             mMap.moveCamera(cameraUpdate)
         }
+
     }
 }

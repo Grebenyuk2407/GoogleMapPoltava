@@ -13,8 +13,8 @@ class MyViewModel : ViewModel() {
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList
 
-    private val _routeData = MutableLiveData<Pair<String, String>>()
-    val routeData: LiveData<Pair<String, String>> = _routeData
+    private val _routeList = MutableLiveData<List<Routes>>() // Заменили на List<Routes>
+    val routeList: LiveData<List<Routes>> = _routeList // Заменили на List<Routes>
 
     fun loadPlaces(apiInterface: ApiInterface) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -26,8 +26,8 @@ class MyViewModel : ViewModel() {
         }
     }
 
-    private fun setRouteData(polylinePoints: String, destinationName: String) {
-        _routeData.value = Pair(polylinePoints, destinationName)
+    private fun setRouteData(routes: List<Routes>) { // Изменено на List<Routes>
+        _routeList.postValue(routes) // Изменено на List<Routes>
     }
 
     fun showMapWithRoute(
@@ -43,16 +43,13 @@ class MyViewModel : ViewModel() {
             )
 
             if (response.isSuccessful) {
-                val points = response.body()?.routes?.firstOrNull()?.overviewPolyline?.points
-                val destinationName = destination.name
-                points?.let {
-                    setRouteData(it, destinationName)
-                    val mapFragment = MapFragment()
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.mapContainer, mapFragment)
-                        .addToBackStack(null)
-                        .commit()
-                }
+                val routes = response.body()?.routes ?: emptyList() // Изменено на List<Routes>
+                setRouteData(routes) // Изменено на List<Routes>
+                val mapFragment = MapFragment()
+                fragmentManager.beginTransaction()
+                    .replace(R.id.mapContainer, mapFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
