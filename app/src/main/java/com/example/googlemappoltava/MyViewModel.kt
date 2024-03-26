@@ -8,8 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyViewModel : ViewModel() {
+class MyViewModel @Inject constructor()  : ViewModel() {
 
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList

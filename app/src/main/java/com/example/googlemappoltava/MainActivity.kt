@@ -5,12 +5,15 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var placesRecyclerView: RecyclerView
-    private lateinit var apiInterface: ApiInterface
-    private lateinit var viewModel: MyViewModel
+    @Inject lateinit var apiInterface: ApiInterface
+    @Inject lateinit var viewModel: MyViewModel
     private lateinit var placesAdapter: PlacesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -15,11 +15,12 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
+import javax.inject.Inject
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private lateinit var viewModel: MyViewModel
+    @Inject lateinit var viewModel: MyViewModel
     private lateinit var destinationName: String
     private var routes: List<Routes>? = null
 
