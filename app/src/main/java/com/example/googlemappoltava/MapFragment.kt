@@ -20,6 +20,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var viewModel: MyViewModel
+    private lateinit var destinationName: String
     private var routes: List<Routes>? = null // Изменено на List<Routes>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,20 +37,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
         viewModel.routeList.observe(viewLifecycleOwner) { routes ->
             this.routes = routes
             if (::mMap.isInitialized) {
-                drawRoutes(routes)
+                drawRoutes(routes, destinationName)
             }
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        routes?.let { drawRoutes(it) } // Добавлено обновление маршрутов при готовности карты
+        destinationName = arguments?.getString("destinationName").toString()
+        routes?.let { drawRoutes(it, destinationName) } // Добавлено обновление маршрутов при готовности карты
     }
 
-    private fun drawRoutes(routes: List<Routes>) {
+    private fun drawRoutes(routes: List<Routes>, destinationName: String) {
         mMap.clear() // Очистим карту перед отрисовкой новых маршрутов
 
         routes.forEach { route ->
@@ -59,8 +62,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             // Добавляем маркеры для начальной и конечной точек маршрута
             mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("Начальная точка"))
-            val destinationName = route.overviewPolyline.points
-            mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(destinationName))
+
+            destinationName.let {
+                mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(it))
+            }
 
             // Вычисляем границы маршрута
             val boundsBuilder = LatLngBounds.builder()

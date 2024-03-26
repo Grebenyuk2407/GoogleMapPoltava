@@ -1,5 +1,6 @@
 package com.example.googlemappoltava
 
+import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -45,7 +46,11 @@ class MyViewModel : ViewModel() {
             if (response.isSuccessful) {
                 val routes = response.body()?.routes ?: emptyList() // Изменено на List<Routes>
                 setRouteData(routes) // Изменено на List<Routes>
-                val mapFragment = MapFragment()
+                val mapFragment = MapFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("destinationName", destination.name)
+                    }
+                }
                 fragmentManager.beginTransaction()
                     .replace(R.id.mapContainer, mapFragment)
                     .addToBackStack(null)
