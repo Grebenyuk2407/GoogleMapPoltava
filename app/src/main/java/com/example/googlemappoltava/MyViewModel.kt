@@ -14,8 +14,8 @@ class MyViewModel : ViewModel() {
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList
 
-    private val _routeList = MutableLiveData<List<Routes>>() // Заменили на List<Routes>
-    val routeList: LiveData<List<Routes>> = _routeList // Заменили на List<Routes>
+    private val _routeList = MutableLiveData<List<Routes>>()
+    val routeList: LiveData<List<Routes>> = _routeList
 
     fun loadPlaces(apiInterface: ApiInterface) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -27,8 +27,8 @@ class MyViewModel : ViewModel() {
         }
     }
 
-    private fun setRouteData(routes: List<Routes>) { // Изменено на List<Routes>
-        _routeList.postValue(routes) // Изменено на List<Routes>
+    private fun setRouteData(routes: List<Routes>) {
+        _routeList.postValue(routes)
     }
 
     fun showMapWithRoute(
@@ -44,8 +44,8 @@ class MyViewModel : ViewModel() {
             )
 
             if (response.isSuccessful) {
-                val routes = response.body()?.routes ?: emptyList() // Изменено на List<Routes>
-                setRouteData(routes) // Изменено на List<Routes>
+                val routes = response.body()?.routes ?: emptyList()
+                setRouteData(routes)
                 val mapFragment = MapFragment().apply {
                     arguments = Bundle().apply {
                         putString("destinationName", destination.name)

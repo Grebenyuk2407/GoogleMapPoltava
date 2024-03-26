@@ -21,7 +21,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var viewModel: MyViewModel
     private lateinit var destinationName: String
-    private var routes: List<Routes>? = null // Изменено на List<Routes>
+    private var routes: List<Routes>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,25 +49,25 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         destinationName = arguments?.getString("destinationName").toString()
-        routes?.let { drawRoutes(it, destinationName) } // Добавлено обновление маршрутов при готовности карты
+        routes?.let { drawRoutes(it, destinationName) }
     }
 
     private fun drawRoutes(routes: List<Routes>, destinationName: String) {
-        mMap.clear() // Очистим карту перед отрисовкой новых маршрутов
+        mMap.clear()
 
         routes.forEach { route ->
             val decodedPoints = PolyUtil.decode(route.overviewPolyline.points)
             val polylineOptions = PolylineOptions().addAll(decodedPoints).color(Color.RED).width(10f)
             mMap.addPolyline(polylineOptions)
 
-            // Добавляем маркеры для начальной и конечной точек маршрута
+
             mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("Начальная точка"))
 
             destinationName.let {
                 mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(it))
             }
 
-            // Вычисляем границы маршрута
+
             val boundsBuilder = LatLngBounds.builder()
             decodedPoints.forEach { boundsBuilder.include(it) }
             val bounds = boundsBuilder.build()
