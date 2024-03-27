@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MyViewModel @Inject constructor()  : ViewModel() {
+@HiltViewModel
+class MyViewModel @Inject constructor(private val apiInterface: ApiInterface)  : ViewModel() {
 
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList
@@ -18,7 +20,7 @@ class MyViewModel @Inject constructor()  : ViewModel() {
     private val _routeList = MutableLiveData<List<Routes>>()
     val routeList: LiveData<List<Routes>> = _routeList
 
-    fun loadPlaces(apiInterface: ApiInterface) {
+    fun loadPlaces() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = apiInterface.getNearbyPlaces()
             if (response.isSuccessful) {
@@ -30,7 +32,6 @@ class MyViewModel @Inject constructor()  : ViewModel() {
 
     fun showMapWithRoute(
         destination: Results,
-        apiInterface: ApiInterface,
         fragmentManager: FragmentManager
     ) {
         viewModelScope.launch {

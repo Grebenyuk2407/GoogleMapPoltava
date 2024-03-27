@@ -12,11 +12,6 @@ import dagger.hilt.components.SingletonComponent
 object MyModule {
 
     @Provides
-    fun provideMyViewModel(): MyViewModel {
-        return MyViewModel()
-    }
-
-    @Provides
     fun provideApiInterface(): ApiInterface {
         return Client.client.create(ApiInterface::class.java)
     }
