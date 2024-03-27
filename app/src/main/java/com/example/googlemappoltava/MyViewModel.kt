@@ -28,10 +28,6 @@ class MyViewModel @Inject constructor()  : ViewModel() {
         }
     }
 
-    private fun setRouteData(routes: List<Routes>) {
-        _routeList.postValue(routes)
-    }
-
     fun showMapWithRoute(
         destination: Results,
         apiInterface: ApiInterface,
@@ -46,7 +42,7 @@ class MyViewModel @Inject constructor()  : ViewModel() {
 
             if (response.isSuccessful) {
                 val routes = response.body()?.routes ?: emptyList()
-                setRouteData(routes)
+                _routeList.postValue(routes)
                 val mapFragment = MapFragment().apply {
                     arguments = Bundle().apply {
                         putString("destinationName", destination.name)

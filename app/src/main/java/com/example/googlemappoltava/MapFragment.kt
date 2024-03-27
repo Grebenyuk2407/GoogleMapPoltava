@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    @Inject lateinit var viewModel: MyViewModel
+    lateinit var viewModel: MyViewModel
     private lateinit var destinationName: String
     private var routes: List<Routes>? = null
 

@@ -8,18 +8,13 @@ import dagger.hilt.components.SingletonComponent
 
 
 @Module
-@InstallIn(ViewModelComponent::class)
-object ViewModelModule {
+@InstallIn(SingletonComponent::class)
+object MyModule {
 
     @Provides
     fun provideMyViewModel(): MyViewModel {
         return MyViewModel()
     }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
 
     @Provides
     fun provideApiInterface(): ApiInterface {
