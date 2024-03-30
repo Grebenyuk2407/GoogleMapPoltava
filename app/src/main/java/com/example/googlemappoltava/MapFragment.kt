@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -64,7 +63,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             mMap.addPolyline(polylineOptions)
 
 
-            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("Начальная точка"))
+            mMap.addMarker(MarkerOptions().position(decodedPoints.first()).title("My position"))
 
             destinationName.let {
                 mMap.addMarker(MarkerOptions().position(decodedPoints.last()).title(it))

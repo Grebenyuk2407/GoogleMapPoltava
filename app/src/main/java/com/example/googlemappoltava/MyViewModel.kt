@@ -56,4 +56,10 @@ class MyViewModel @Inject constructor(private val apiInterface: ApiInterface)  :
             }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        _placesList.value = emptyList()
+        _routeList.value = emptyList()
+    }
 }
