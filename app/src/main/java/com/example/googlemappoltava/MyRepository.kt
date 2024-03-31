@@ -19,6 +19,7 @@ class MyRepositoryImpl(private val apiInterface: ApiInterface) : MyRepository {
                 null
             }
         } catch (e: Exception) {
+            Log.e("MyRepositoryImpl", "getNearbyPlaces request failed", e)
             null
         }
     }
@@ -32,7 +33,6 @@ class MyRepositoryImpl(private val apiInterface: ApiInterface) : MyRepository {
                 null
             }
         } catch (e: Exception) {
-            Log.e("MyRepositoryImpl", "getNearbyPlaces request failed", e)
             null
         }
     }
