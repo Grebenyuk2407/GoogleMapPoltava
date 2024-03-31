@@ -14,4 +14,9 @@ object MyModule {
     fun provideApiInterface(): ApiInterface {
         return Client.client.create(ApiInterface::class.java)
     }
+
+    @Provides
+    fun provideMyRepository(apiInterface: ApiInterface): MyRepository {
+        return MyRepositoryImpl(apiInterface)
+    }
 }

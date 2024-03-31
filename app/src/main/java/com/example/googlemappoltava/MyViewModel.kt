@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyViewModel @Inject constructor(private val apiInterface: ApiInterface)  : ViewModel() {
+class MyViewModel @Inject constructor(private val myRepository: MyRepository)  : ViewModel() {
 
     private val _placesList = MutableLiveData<List<Results>>()
     val placesList: LiveData<List<Results>> = _placesList
@@ -22,10 +22,9 @@ class MyViewModel @Inject constructor(private val apiInterface: ApiInterface)  :
 
     fun loadPlaces() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = apiInterface.getNearbyPlaces()
-            if (response.isSuccessful) {
-                val places = response.body()?.results ?: emptyList()
-                _placesList.postValue(places)
+                val places = myRepository.getNearbyPlaces()
+            places.let {
+                _placesList.postValue(it)
             }
         }
     }
@@ -35,15 +34,14 @@ class MyViewModel @Inject constructor(private val apiInterface: ApiInterface)  :
         fragmentManager: FragmentManager
     ) {
         viewModelScope.launch {
-            val response = apiInterface.getComplexRoute(
+            val routes =myRepository.getComplexRoute(
                 "49.5937300,34.5407300",
                 "${destination.geometry.location.lat},${destination.geometry.location.lng}",
                 ""
             )
 
-            if (response.isSuccessful) {
-                val routes = response.body()?.routes ?: emptyList()
-                _routeList.postValue(routes)
+            routes.let {
+                _routeList.postValue(it)
                 val mapFragment = MapFragment().apply {
                     arguments = Bundle().apply {
                         putString("destinationName", destination.name)
