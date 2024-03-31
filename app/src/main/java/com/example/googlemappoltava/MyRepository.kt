@@ -1,5 +1,7 @@
 package com.example.googlemappoltava
 
+import android.util.Log
+
 
 interface MyRepository {
     suspend fun getNearbyPlaces(): List<Results>?
@@ -13,6 +15,7 @@ class MyRepositoryImpl(private val apiInterface: ApiInterface) : MyRepository {
             if (response.isSuccessful) {
                 response.body()?.results
             } else {
+                Log.e("MyRepositoryImpl", "getNearbyPlaces request failed: ${response.code()}")
                 null
             }
         } catch (e: Exception) {
@@ -29,6 +32,7 @@ class MyRepositoryImpl(private val apiInterface: ApiInterface) : MyRepository {
                 null
             }
         } catch (e: Exception) {
+            Log.e("MyRepositoryImpl", "getNearbyPlaces request failed", e)
             null
         }
     }
